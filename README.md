@@ -11,7 +11,7 @@
    2. Examples: Minimum value in a given range, Maximum value in a given range, Sum of values in a given range.
 
 >Logical Representation of Segment Tree<br>
-      ![](https://github.com/balaprojects/images/blob/master/SegmentTree_LogicalRepresentation.PNG)
+    ![](https://github.com/balaprojects/images/blob/master/SegmentTree_LogicalRepresentation.PNG)
 
 >Number of nodes in a tree<br>
    - 1 + 2 + 2^2 + 2^3 + .. + 2^h = 2^(h + 1) - 1
