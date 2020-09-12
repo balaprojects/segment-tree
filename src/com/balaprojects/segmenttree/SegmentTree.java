@@ -22,7 +22,7 @@ public class SegmentTree {
     }
 
     public int query(int[] segmentTree, int low, int high, int length) {
-        return query(segmentTree, low, high, 0, length - 1, 0);
+        return query(segmentTree, low, high, 0, length, 0);
     }
 
     public int query(int[] segmentTree, int qlow, int qhigh, int low, int high, int pos) {
@@ -34,6 +34,50 @@ public class SegmentTree {
         int mid = (low + high) / 2;
         return Math.min(query(segmentTree, qlow, qhigh, low, mid, ((pos * 2) + 1)),
                 query(segmentTree, qlow, qhigh, (mid + 1), high, ((pos * 2) + 2)));
+    }
+
+    public void update(int[] input, int[] segmentTree, int index, int delta) {
+        input[index] += delta;
+        update(segmentTree, index, delta, 0, input.length - 1, 0);
+    }
+
+    public void update(int[] segmentTree, int index, int delta, int low, int high, int pos) {
+        if(index < low || index > high) {
+            return;
+        }
+
+        if(low == high) {
+            segmentTree[pos] += delta;
+            return;
+        }
+
+        int mid = (low + high) / 2;
+        update(segmentTree, index, delta, low, mid, ((2*pos) + 1));
+        update(segmentTree, index, delta, mid + 1, high, ((2*pos) + 2));
+        segmentTree[pos] = Math.min(segmentTree[((2*pos) + 1)], segmentTree[((2*pos) + 2)]);
+    }
+
+    public void updateRange(int[] input, int[] segmentTree, int startIndex, int endIndex, int delta) {
+        for (int i = startIndex; i <= endIndex; i++) {
+            input[i] += delta;
+        }
+        updateRange(segmentTree, startIndex, endIndex, delta, 0, input.length - 1, 0);
+    }
+
+    public void updateRange(int[] segmentTree, int startIndex, int endIndex, int delta, int low, int high, int pos) {
+        if(startIndex > high || endIndex < low) {
+            return;
+        }
+
+        if(low == high) {
+            segmentTree[pos] += delta;
+            return;
+        }
+
+        int mid = (low + high) / 2;
+        updateRange(segmentTree, startIndex, endIndex, delta, low, mid, ((2*pos) + 1));
+        updateRange(segmentTree, startIndex, endIndex, delta, mid + 1, high, ((2*pos) + 2));
+        segmentTree[pos] = Math.min(segmentTree[((2*pos) + 1)], segmentTree[((2*pos) + 2)]);
     }
 
 }
