@@ -11,4 +11,4 @@
    2. Examples: Minimum value in a given range, Maximum value in a given range, Sum of values in a given range.
 
 >Logical Representation of Segment Tree
-   ![](https://github.com/balaprojects/images/blob/master/SegmentTree_LogicalRepresentation.PNG)
+      ![](https://github.com/balaprojects/images/blob/master/SegmentTree_LogicalRepresentation.PNG)
