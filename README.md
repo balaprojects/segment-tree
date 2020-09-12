@@ -18,3 +18,9 @@
    - 2^h =N
    - 2.2^h - 1 = 2N - 1
    Hence total number of nodes in a tree is **2N - 1**.
+
+>Range Query Logic
+  - There are 3 possibilities when we compare a query range with a node's range
+      - Full Overlap
+      - Partial Overlap
+      - No Overlap
