@@ -1,7 +1,5 @@
 package com.balaprojects.segmenttree;
 
-import java.util.Arrays;
-
 public class SegmentTree {
 
     public int[] constructSegmentTree(int[] input) {
@@ -78,6 +76,70 @@ public class SegmentTree {
         updateRange(segmentTree, startIndex, endIndex, delta, low, mid, ((2*pos) + 1));
         updateRange(segmentTree, startIndex, endIndex, delta, mid + 1, high, ((2*pos) + 2));
         segmentTree[pos] = Math.min(segmentTree[((2*pos) + 1)], segmentTree[((2*pos) + 2)]);
+    }
+
+    public void updateLazy(int[] segmentTree, int[] lazyTree, int low, int high, int startRange, int endRange, int pos, int delta) {
+        if(low > high) {
+            return;
+        }
+
+        if(lazyTree[pos] != 0) {
+            segmentTree[pos] += lazyTree[pos];
+            if(low != high) {
+                lazyTree[2*pos+1] += lazyTree[pos];
+                lazyTree[2*pos+2] += lazyTree[pos];
+            }
+            lazyTree[pos] = 0;
+        }
+
+        //No overlap
+        if(startRange > high || endRange < low) {
+            return;
+        }
+
+        //Full overlap
+        if(startRange <= low && endRange >= high) {
+            segmentTree[pos] += delta;
+            if(low != high) {
+                lazyTree[2*pos+1] += delta;
+                lazyTree[2*pos+2] += delta;
+            }
+            return;
+        }
+
+        int mid = (low + high) / 2;
+        updateLazy(segmentTree, lazyTree, low, mid, startRange, endRange, 2*pos+1, delta);
+        updateLazy(segmentTree, lazyTree, mid+1, high, startRange, endRange, 2*pos+2, delta);
+        segmentTree[pos] = Math.min(segmentTree[2*pos+1], segmentTree[2*pos+2]);
+    }
+
+    public int queryLazy(int[] segmentTree, int[] lazyTree, int low, int high, int startRange, int endRange, int pos) {
+        if(low > high) {
+            return Integer.MAX_VALUE;
+        }
+
+        if(lazyTree[pos] != 0) {
+            segmentTree[pos] += lazyTree[pos];
+            if(low != high) {
+                lazyTree[2*pos+1] += lazyTree[pos];
+                lazyTree[2*pos+2] += lazyTree[pos];
+            }
+            lazyTree[pos] = 0;
+        }
+
+        //No overlap
+        if(startRange > high || endRange < low) {
+            return Integer.MAX_VALUE;
+        }
+
+        //Full overlap
+        if(startRange <= low && endRange >= high) {
+            return segmentTree[pos];
+        }
+
+        int mid = (low + high) / 2;
+        return Math.min(queryLazy(segmentTree, lazyTree, low, mid, startRange, endRange, 2*pos+1),
+                            queryLazy(segmentTree, lazyTree, mid+1, high, startRange, endRange, 2*pos+2));
     }
 
 }
